@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
@@ -21,4 +22,9 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::resource('customers', CustomerController::class);
 });
