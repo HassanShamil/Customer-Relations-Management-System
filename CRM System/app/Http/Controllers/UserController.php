@@ -35,7 +35,7 @@ class UserController extends Controller
 
         auth() -> login($user);
         
-        return redirect('/');
+        return redirect('/dashboard');
     }
 
     public function login(Request $request) {
@@ -49,7 +49,7 @@ class UserController extends Controller
         // return redirect('/');
         if (auth()->attempt(['name' => $incomingFields['loginname'], 'password'=> $incomingFields['loginpassword']])) {
             $request->session()->regenerate();
-            return redirect('/');
+            return redirect('/dashboard');
         }
 
         return back()->withErrors(['loginname' => 'Invalid credentials']);
