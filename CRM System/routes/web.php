@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
@@ -27,4 +28,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('customers', CustomerController::class);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::resource('proposals', ProposalController::class);
 });
