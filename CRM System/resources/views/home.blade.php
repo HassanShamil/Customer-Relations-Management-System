@@ -7,6 +7,17 @@
 <body>
 
     @auth
+
+
+    <nav>
+        <ul>
+            <li><a href="">dashboard</a></li>
+            <li><a href="">customers</a></li>
+            <li><a href="">proposals</a></li>
+            <li><a href="">invoices</a></li>
+            
+        </ul>
+    </nav>
         
     <p>Welcome {{ auth()->user()->name }} !</p>
     <form action="/logout" method="POST">
@@ -20,7 +31,7 @@
     @else
 
     <div style="border: 3px solid black; margin-bottom: 2px">
-        <h1>Log in</h1>
+        <h1 class=>Log in</h1>
         <form action="/login" method="POST">
             @csrf     
             <label for="loginname">username</label>
@@ -42,7 +53,7 @@
             <label for="name">username</label>
             <input name="name" type="text" id="name">
             <label for="email">email</label>
-            <input name="email" type="text" id="email">
+            <input name="email" type="email" id="email">
             <label for="password">password</label>
             <input name="password" type="password" id="password">
             <label for="confirm_password">confirm password</label>

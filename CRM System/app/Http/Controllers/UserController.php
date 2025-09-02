@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\WelcomeEmail;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -26,7 +28,10 @@ class UserController extends Controller
         if (!$user) {
             logger('User creation failed');
             return 'User creation failed';
-    }
+        }
+
+        Mail::to($user->email)->send(new WelcomeEmail($user));
+
 
         auth() -> login($user);
         
@@ -39,12 +44,8 @@ class UserController extends Controller
             'loginpassword' => 'required'
         ]);
 
-        // if (auth()->attempt(['name' => $incomingFields['loginname'], 'password'=> $incomingFields['loginpassword']])) {
-        //     $request -> session()-> regenerate();
-        // }
 
-        
-
+    
         // return redirect('/');
         if (auth()->attempt(['name' => $incomingFields['loginname'], 'password'=> $incomingFields['loginpassword']])) {
             $request->session()->regenerate();
