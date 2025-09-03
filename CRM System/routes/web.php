@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\DashboardController;
+
 
 Route::get('/', function () {
 
@@ -25,7 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 });
 
-
 Route::middleware('auth')->group(function () {
     Route::resource('customers', CustomerController::class);
 });
@@ -33,3 +34,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('proposals', ProposalController::class);
 });
+
+Route::middleware('auth')->group(function () {
+    Route::resource('invoices', InvoiceController::class);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/invoices/{invoice}/send', [InvoiceController::class, 'sendEmail'])->name('invoices.send');
+});
+
+
