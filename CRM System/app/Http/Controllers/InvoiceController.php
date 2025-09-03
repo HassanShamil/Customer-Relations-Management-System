@@ -139,6 +139,12 @@ class InvoiceController extends Controller
         if ($invoice->status !== 'paid') {
             $invoice->update(['status' => 'paid']);
 
+            Transaction::create([
+                'invoice_id' => $invoice->id,
+                'customer_id' => $invoice->customer_id,
+                'amount' => $invoice->due_amount,
+                'paid_at' => now(),
+            ]);
         }
 
         return view('invoices.thankyou', compact('invoice'));
