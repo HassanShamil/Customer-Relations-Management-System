@@ -6,7 +6,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
 
@@ -43,4 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoices/{invoice}/send', [InvoiceController::class, 'sendEmail'])->name('invoices.send');
 });
 
+
+Route::get('/invoices/{invoice}/pay', [InvoiceController::class, 'pay'])->middleware('signed') ->name('invoices.pay');
+
+Route::post('/invoices/{invoice}/checkout', [InvoiceController::class, 'checkout'])->name('stripe.checkout');
+
+Route::get('/invoices/{invoice}/success', [InvoiceController::class,'paymentSuccess'])-> name('stripe.success');
 

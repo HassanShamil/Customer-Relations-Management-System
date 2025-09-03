@@ -92,5 +92,55 @@ class InvoiceController extends Controller
         return back()->with('success', 'Invoice sent successfully!');
     }
 
+    public function pay(Invoice $invoice)
+    {
+        if ($invoice->status === 'paid') {
+            return view('invoices.thankyou', compact('invoice'));
+        }
 
+        return view('invoices.pay', compact('invoice'));
+    }
+
+    public function checkout(Invoice $invoice)
+    {
+
+        if ($invoice->status === 'paid') {
+            return redirect()->route('invoices.pay', $invoice)
+                ->with('info', 'This invoice has already been paid.');
+        }
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $invoice->title,
+                    ],
+                    'unit_amount' => $invoice->due_amount * 100, 
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('stripe.success', $invoice->id),
+            'cancel_url' => route('invoices.index'),
+            'metadata' => [
+                'invoice_id' => $invoice->id
+            ]
+        ]);
+
+        return redirect($session->url);
+    }
+
+    public function paymentSuccess(Invoice $invoice)
+    {
+        if ($invoice->status !== 'paid') {
+            $invoice->update(['status' => 'paid']);
+
+        }
+
+        return view('invoices.thankyou', compact('invoice'));
+    }
 }
