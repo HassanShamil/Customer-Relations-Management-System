@@ -9,8 +9,8 @@
     @endif
 
     @if ($transactions->count())
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
                 <tr>
                     <th>ID</th>
                     <th>Customer</th>

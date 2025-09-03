@@ -7,7 +7,7 @@
     <a href="{{ route('proposals.create') }}" class="btn btn-primary mb-3">+ Create Proposal</a>
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div id="success-alert"  class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     <table class="table table-bordered table-striped">
@@ -43,3 +43,11 @@
     </table>
 </div>
 @endsection
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#success-alert').delay(3000).fadeOut(500);
+    });
+</script>
